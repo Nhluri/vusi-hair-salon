@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Contact | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+<header class="site-header">
+  <nav class="navbar" aria-label="Primary navigation">
+    <a href="index.html" class="brand" id="brandLink">Vusi's</a>
+
+    <div class="nav-links" id="pageNavLinks"></div>
+
+    <button type="button" class="nav-cta" id="backButton">
+      Back
+    </button>
+  </nav>
+</header>
+
+<main class="admin-page">
+  <section class="admin-hero">
+    <div>
+      <p class="eyebrow">Contact Us</p>
+      <h1>Visit or message the studio.</h1>
+      <p>Tap any contact detail to copy it, or send an enquiry to the studio.</p>
+    </div>
+  </section>
+
+  <section class="admin-grid">
+    <div class="admin-panel" id="contactDetails"></div>
+
+    <form class="admin-panel" id="messageForm">
+      <h2>Send Enquiry</h2>
+
+      <div class="form-group">
+        <label for="msgName">Name</label>
+        <input id="msgName" type="text" required />
+      </div>
+
+      <div class="form-group">
+        <label for="msgEmail">Email</label>
+        <input id="msgEmail" type="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="msgText">Message</label>
+        <input id="msgText" type="text" required />
+      </div>
+
+      <button class="button" type="submit">Send Message</button>
+    </form>
+  </section>
+</main>
+
+<script src="js/content-store.js"></script>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get("from");
+
+  const brandLink = document.getElementById("brandLink");
+  const pageNavLinks = document.getElementById("pageNavLinks");
+  const backButton = document.getElementById("backButton");
+
+  function getFallbackPage() {
+    if (currentUser || from === "home") {
+      return "home.html";
+    }
+
+    return "index.html";
+  }
+
+  function setupNavigation() {
+    const fallback = getFallbackPage();
+
+    brandLink.href = fallback;
+
+    if (currentUser) {
+      pageNavLinks.innerHTML = `
+        <a href="home.html">Home</a>
+        <a href="booking.html">Book</a>
+        <a href="gallery.html?from=home">Gallery</a>
+        <a href="about.html?from=home">About</a>
+        <a href="contact.html?from=home">Contact</a>
+      `;
+    } else {
+      pageNavLinks.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="gallery.html?from=index">Gallery</a>
+        <a href="about.html?from=index">About</a>
+        <a href="contact.html?from=index">Contact</a>
+        
+      `;
+    }
+
+    backButton.addEventListener("click", function () {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      window.location.href = fallback;
+    });
+  }
+
+  const contact = getContactDetails();
+  const box = document.getElementById("contactDetails");
+
+  box.innerHTML = `
+    <h2>Studio Details</h2>
+    <div class="service-breakdown">
+      <button type="button" class="breakdown-row" onclick="copyText('${contact.phone}')">
+        <span>Phone</span><strong>${contact.phone}</strong>
+      </button>
+
+      <button type="button" class="breakdown-row" onclick="copyText('${contact.email}')">
+        <span>Email</span><strong>${contact.email}</strong>
+      </button>
+
+      <button type="button" class="breakdown-row" onclick="copyText('${contact.address}')">
+        <span>Address</span><strong>${contact.address}</strong>
+      </button>
+
+      <button type="button" class="breakdown-row" onclick="copyText('${contact.whatsapp}')">
+        <span>WhatsApp</span><strong>${contact.whatsapp}</strong>
+      </button>
+
+      <div class="breakdown-row">
+        <span>Hours</span><strong>${contact.hours}</strong>
+      </div>
+    </div>
+  `;
+
+  function copyText(value) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(value);
+    }
+
+    alert("Copied: " + value);
+  }
+
+  document.getElementById("messageForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const messages = JSON.parse(localStorage.getItem("contactMessages")) || [];
+
+    messages.push({
+      id: Date.now(),
+      name: document.getElementById("msgName").value.trim(),
+      email: document.getElementById("msgEmail").value.trim(),
+      message: document.getElementById("msgText").value.trim(),
+      status: "new"
+    });
+
+    localStorage.setItem("contactMessages", JSON.stringify(messages));
+    alert("Message saved. We will contact you soon.");
+    event.target.reset();
+  });
+
+  setupNavigation();
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Walk-ins & Bookings | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
+        Vusi's Admin
+      </a>
+
+      <div class="nav-links">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-employees.html">Employees</a>
+        <a href="admin-users.html">Users</a>
+        <a href="admin-walkins.html">Walk-ins</a>
+      </div>
+
+      <button type="button" class="nav-cta logout-button" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main class="walkins-page">
+    <section class="admin-hero walkins-hero" aria-labelledby="walkinsTitle">
+      <div>
+        <p class="eyebrow">Queue Control</p>
+        <h1 id="walkinsTitle">Walk-ins and bookings in one place.</h1>
+        <p>
+          Add walk-in customers, assign them to available employees, monitor queue pressure, and keep appointments moving.
+        </p>
+      </div>
+
+      <aside class="admin-focus-card" aria-label="Queue summary">
+        <span>Queue Status</span>
+        <strong id="queueStatus">Calm</strong>
+        <p id="queueSummary">No walk-ins waiting yet.</p>
+      </aside>
+    </section>
+
+    <section class="walkins-grid">
+      <section class="admin-panel" aria-labelledby="addWalkinTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">New Customer</p>
+          <h2 id="addWalkinTitle">Add walk-in</h2>
+        </div>
+
+        <form id="walkinForm">
+          <div class="form-group">
+            <label for="walkName">Customer Name</label>
+            <input id="walkName" type="text" placeholder="Enter name" autocomplete="name" />
+          </div>
+
+          <div class="form-group">
+            <label for="walkEmail">Customer Email</label>
+            <input id="walkEmail" type="email" placeholder="Enter email" autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label for="walkService">Service</label>
+            <select id="walkService">
+              <option value="Haircut">Haircut</option>
+              <option value="Nails">Nails</option>
+              <option value="Beard Trim">Beard Trim</option>
+            </select>
+          </div>
+
+          <button type="submit" class="button">Add Walk-in</button>
+        </form>
+      </section>
+
+      <section class="admin-panel" aria-labelledby="queueInsightTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Feature 01</p>
+          <h2 id="queueInsightTitle">Queue insight</h2>
+        </div>
+
+        <div class="queue-health">
+          <strong id="waitingCount">0 waiting</strong>
+          <div class="workload-track">
+            <div id="walkinQueueBar"></div>
+          </div>
+          <p id="waitEstimate">Estimated wait will appear here.</p>
+        </div>
+      </section>
+    </section>
+
+    <section class="admin-grid">
+      <section class="admin-panel" aria-labelledby="employeeLoadTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Feature 02</p>
+          <h2 id="employeeLoadTitle">Employee queue load</h2>
+        </div>
+
+        <div id="employeeQueueLoad" class="compact-list"></div>
+      </section>
+
+      <section class="admin-panel" aria-labelledby="customerFlowTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Customer Flow</p>
+          <h2 id="customerFlowTitle">Customer totals</h2>
+        </div>
+
+        <div id="customerTotals" class="service-breakdown"></div>
+      </section>
+    </section>
+
+    <section class="admin-panel queue-panel" aria-labelledby="walkListTitle">
+      <div class="panel-heading panel-heading-row">
+        <div>
+          <p class="eyebrow">Walk-in Queue</p>
+          <h2 id="walkListTitle">Waiting customers</h2>
+        </div>
+
+        <select id="walkinFilter" aria-label="Filter walk-ins">
+          <option value="all">All walk-ins</option>
+          <option value="waiting">Waiting</option>
+          <option value="serving">In progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div id="walkList" class="task-list"></div>
+    </section>
+
+    <section class="admin-panel queue-panel" aria-labelledby="bookingListTitle">
+      <div class="panel-heading">
+        <p class="eyebrow">Bookings</p>
+        <h2 id="bookingListTitle">Scheduled clients</h2>
+      </div>
+
+      <div id="bookingList" class="task-list"></div>
+    </section>
+  </main>
+
+  <script src="js/admin-walkins.js"></script>
+</body>
+</html>

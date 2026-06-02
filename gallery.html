@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Gallery | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a href="index.html" class="brand" id="galleryBrandLink">
+        Vusi's
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        onclick="toggleMenu()"
+      >
+        Menu
+      </button>
+
+      <div class="nav-links" id="galleryNavLinks"></div>
+
+      <a href="register.html" class="nav-cta" id="galleryCta">
+        Book Now
+      </a>
+    </nav>
+  </header>
+
+  <main class="admin-page">
+    <section class="admin-hero">
+      <div>
+        <p class="eyebrow">Gallery</p>
+        <h1>Looks with presence.</h1>
+        <p>
+          Browse salon work, preview styles, and select a look before booking.
+        </p>
+      </div>
+
+      <aside class="admin-focus-card">
+        <span>Selected Look</span>
+        <strong id="gallerySelectedTitle">None selected</strong>
+        <p>Tap a gallery image to save it for your booking.</p>
+      </aside>
+    </section>
+
+    <section class="admin-panel">
+      <div class="panel-heading panel-heading-row">
+        <div>
+          <p class="eyebrow">Browse</p>
+          <h2>Salon gallery</h2>
+        </div>
+
+        <select id="galleryFilter" aria-label="Filter gallery">
+          <option value="All">All services</option>
+          <option value="Hair">Hair</option>
+          <option value="Nails">Nails</option>
+          <option value="Beard">Beard</option>
+        </select>
+      </div>
+
+      <div id="publicGallery" class="gallery-grid"></div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Preview</p>
+        <h2 id="previewTitle">Choose a gallery image</h2>
+      </div>
+
+      <img
+        id="previewImage"
+        src="images/hair1.jpg"
+        alt="Gallery preview"
+        class="gallery-preview-image"
+      />
+
+      <div class="gallery-preview-actions">
+        <button type="button" class="button" id="bookPreviewBtn">
+          Continue With This Look
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/content-store.js"></script>
+
+  <script>
+    const gallery = getGallery();
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from");
+
+    const navLinks = document.getElementById("galleryNavLinks");
+    const cta = document.getElementById("galleryCta");
+    const brandLink = document.getElementById("galleryBrandLink");
+
+    let selectedGalleryService = "";
+    let selectedGalleryImage = "";
+
+    function toggleMenu() {
+      const toggle = document.querySelector(".menu-toggle");
+
+      navLinks.classList.toggle("is-open");
+
+      const isOpen = navLinks.classList.contains("is-open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      toggle.textContent = isOpen ? "Close" : "Menu";
+    }
+
+    function closeMenu() {
+      const toggle = document.querySelector(".menu-toggle");
+
+      if (navLinks.classList.contains("is-open")) {
+        navLinks.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.textContent = "Menu";
+      }
+    }
+
+    function setupGalleryNavigation() {
+      if (currentUser || from === "home") {
+        brandLink.href = "home.html";
+
+        navLinks.innerHTML = `
+          <a href="home.html">Home</a>
+          <a href="booking.html">Book</a>
+          <a href="gallery.html?from=home">Gallery</a>
+          <a href="about.html?from=home">About</a>
+          <a href="contact.html?from=home">Contact</a>
+        `;
+
+        cta.textContent = "Back Home";
+        cta.href = "home.html";
+      } else {
+        brandLink.href = "index.html";
+
+        navLinks.innerHTML = `
+          <a href="index.html">Home</a>
+          <a href="gallery.html?from=index">Gallery</a>
+          <a href="about.html?from=index">About</a>
+          <a href="contact.html?from=index">Contact</a>
+          <a href="login.html">Login</a>
+        `;
+
+        cta.textContent = "Book Now";
+        cta.href = "register.html";
+      }
+
+      document.querySelectorAll("#galleryNavLinks a").forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+      });
+    }
+
+    function renderGallery(category) {
+      const grid = document.getElementById("publicGallery");
+      const items = category === "All"
+        ? gallery
+        : gallery.filter(function (item) {
+            return item.category === category;
+          });
+
+      grid.innerHTML = "";
+
+      if (items.length === 0) {
+        grid.innerHTML = '<p class="empty-state">No images found for this service.</p>';
+        return;
+      }
+
+      items.forEach(function (item) {
+        grid.innerHTML += `
+          <button
+            class="gallery-item"
+            type="button"
+            onclick="previewAndSelect('${item.id}')"
+            aria-label="Select ${item.title}"
+          >
+            <img src="${item.image}" alt="${item.title}" />
+          </button>
+        `;
+      });
+    }
+
+    function previewAndSelect(id) {
+      const item = gallery.find(function (galleryItem) {
+        return String(galleryItem.id) === String(id);
+      });
+
+      if (!item) return;
+
+      const service = galleryToService(item);
+
+      selectedGalleryService = service;
+      selectedGalleryImage = item.image;
+
+      localStorage.setItem("selectedService", service);
+      localStorage.setItem("selectedImage", item.image);
+
+      document.getElementById("previewImage").src = item.image;
+      document.getElementById("previewImage").alt = item.title;
+      document.getElementById("previewTitle").textContent = item.title;
+      document.getElementById("gallerySelectedTitle").textContent = service + " selected";
+    }
+
+    document.getElementById("galleryFilter").addEventListener("change", function () {
+      renderGallery(this.value);
+    });
+
+    document.getElementById("bookPreviewBtn").addEventListener("click", function () {
+      const service = localStorage.getItem("selectedService");
+      const image = localStorage.getItem("selectedImage");
+
+      if (!service || !image) {
+        alert("Please select a gallery image first.");
+        return;
+      }
+
+      if (!currentUser) {
+        window.location.href = "register.html";
+        return;
+      }
+
+      window.location.href = "booking.html";
+    });
+
+    setupGalleryNavigation();
+    renderGallery("All");
+
+    if (gallery.length > 0) {
+      previewAndSelect(gallery[0].id);
+    }
+  </script>
+</body>
+</html>

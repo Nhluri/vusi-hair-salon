@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Book Appointment | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a href="home.html" class="brand" aria-label="Vusi's Hair Salon home">
+        Vusi's
+      </a>
+
+      <div class="nav-links">
+        <a href="home.html">Home</a>
+      </div>
+
+      <button type="button" class="nav-cta logout-button" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main class="booking-page">
+    <section class="booking-shell" aria-labelledby="booking-title">
+      <div class="booking-copy">
+        <p class="eyebrow">Appointment Studio</p>
+
+        <h1 id="booking-title">Reserve your chair.</h1>
+
+        <p>
+          Confirm your selected service, choose your time, and book with one of our available stylists.
+        </p>
+
+        <div class="booking-preview" aria-label="Selected service preview">
+          <img
+            id="bookingPreviewImage"
+            src="images/hair1.jpg"
+            alt="Selected service preview"
+          />
+
+          <div>
+            <span>Selected Look</span>
+            <strong id="bookingPreviewTitle">Haircut</strong>
+          </div>
+        </div>
+      </div>
+
+      <section class="booking-card" aria-label="Book appointment form">
+        <p class="form-kicker">Book Appointment</p>
+
+        <h2>Choose your slot</h2>
+
+        <form id="bookingForm">
+          <div class="form-group">
+            <label for="service">Service</label>
+            <select id="service" name="service" required>
+              <option value="Haircut">Haircut</option>
+              <option value="Nails">Nails</option>
+              <option value="Beard Trim">Beard Trim</option>
+            </select>
+          </div>
+
+          <div class="booking-fields">
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" name="date" required />
+            </div>
+
+            <div class="form-group">
+              <label for="time">Time</label>
+              <input type="time" id="time" name="time" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="employee">Select Employee</label>
+            <select id="employee" name="employee" required></select>
+          </div>
+
+          <button type="submit" class="button">Book Now</button>
+        </form>
+
+        <p class="booking-note">
+          Double bookings are blocked automatically for the same stylist, date, and time.
+        </p>
+      </section>
+    </section>
+  </main>
+
+  <script src="js/booking.js"></script>
+</body>
+</html>

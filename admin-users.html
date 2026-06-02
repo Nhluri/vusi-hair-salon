@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Users | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
+        Vusi's Admin
+      </a>
+
+      <div class="nav-links">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-employees.html">Employees</a>
+        <a href="admin-users.html">Users</a>
+        <a href="admin-walkins.html">Walk-ins</a>
+      </div>
+
+      <button type="button" class="nav-cta logout-button" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main class="admin-users-page">
+    <section class="admin-hero users-admin-hero" aria-labelledby="usersTitle">
+      <div>
+        <p class="eyebrow">Client Management</p>
+        <h1 id="usersTitle">Know your customers.</h1>
+        <p>
+          View registered customers, track their booking history, identify loyal clients, and manage customer records.
+        </p>
+      </div>
+
+      <aside class="admin-focus-card" aria-label="Customer summary">
+        <span>Total Customers</span>
+        <strong id="totalUsers">0 customers</strong>
+        <p id="customerSummary">No registered customers yet.</p>
+      </aside>
+    </section>
+
+    <section class="admin-grid">
+      <section class="admin-panel" aria-labelledby="loyalClientsTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Feature 01</p>
+          <h2 id="loyalClientsTitle">Loyal clients</h2>
+        </div>
+
+        <div id="loyalClients" class="compact-list"></div>
+      </section>
+
+      <section class="admin-panel" aria-labelledby="clientServiceTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Feature 02</p>
+          <h2 id="clientServiceTitle">Client service demand</h2>
+        </div>
+
+        <div id="clientServiceDemand" class="service-breakdown"></div>
+      </section>
+    </section>
+
+    <section class="admin-panel user-directory" aria-labelledby="userDirectoryTitle">
+      <div class="panel-heading panel-heading-row">
+        <div>
+          <p class="eyebrow">Directory</p>
+          <h2 id="userDirectoryTitle">Registered users</h2>
+        </div>
+
+        <input
+          id="searchUser"
+          type="search"
+          placeholder="Search customer"
+          aria-label="Search customer"
+        />
+      </div>
+
+      <div id="userList" class="user-list"></div>
+    </section>
+  </main>
+
+  <script src="js/admin-users.js"></script>
+</body>
+</html>

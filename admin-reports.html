@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Reports | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
+        Vusi's Admin
+      </a>
+
+      <div class="nav-links">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-employees.html">Employees</a>
+        <a href="admin-users.html">Users</a>
+        <a href="admin-walkins.html">Walk-ins</a>
+        <a href="admin-reports.html">Reports</a>
+      </div>
+
+      <button type="button" class="nav-cta logout-button" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main class="reports-page">
+    <section class="admin-hero reports-hero" aria-labelledby="reportsTitle">
+      <div>
+        <p class="eyebrow">Salon Analytics</p>
+        <h1 id="reportsTitle">Performance you can act on.</h1>
+        <p>
+          Review employee output, completion rates, service demand, queue pressure, and daily salon activity.
+        </p>
+      </div>
+
+      <aside class="admin-focus-card" aria-label="Report summary">
+        <span>Completion Rate</span>
+        <strong id="overallCompletion">0%</strong>
+        <p id="overallSummary">No completed work yet.</p>
+      </aside>
+    </section>
+
+    <section class="admin-stats" aria-label="Report totals">
+      <article>
+        <span>Total Tasks</span>
+        <strong id="totalTasksReport">0</strong>
+      </article>
+
+      <article>
+        <span>Completed</span>
+        <strong id="completedTasksReport">0</strong>
+      </article>
+
+      <article>
+        <span>Waiting</span>
+        <strong id="waitingTasksReport">0</strong>
+      </article>
+
+      <article>
+        <span>In Progress</span>
+        <strong id="servingTasksReport">0</strong>
+      </article>
+    </section>
+
+    <section class="reports-grid">
+      <section class="admin-panel" aria-labelledby="serviceChartTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Feature 01</p>
+          <h2 id="serviceChartTitle">Service demand graph</h2>
+        </div>
+
+        <div id="serviceChart" class="bar-chart"></div>
+      </section>
+
+      <section class="admin-panel" aria-labelledby="employeeChartTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Feature 02</p>
+          <h2 id="employeeChartTitle">Employee completion graph</h2>
+        </div>
+
+        <div id="employeeChart" class="bar-chart"></div>
+      </section>
+    </section>
+
+    <section class="reports-grid">
+      <section class="admin-panel" aria-labelledby="topPerformerTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Best Performer</p>
+          <h2 id="topPerformerTitle">Top employee</h2>
+        </div>
+
+        <div id="topPerformer" class="compact-list"></div>
+      </section>
+
+      <section class="admin-panel" aria-labelledby="statusMixTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Operations</p>
+          <h2 id="statusMixTitle">Status mix</h2>
+        </div>
+
+        <div id="statusMix" class="donut-wrap"></div>
+      </section>
+    </section>
+
+    <section class="admin-panel report-directory" aria-labelledby="reportListTitle">
+      <div class="panel-heading panel-heading-row">
+        <div>
+          <p class="eyebrow">Employee Reports</p>
+          <h2 id="reportListTitle">Team performance</h2>
+        </div>
+
+        <input
+          type="search"
+          id="search"
+          placeholder="Search employee"
+          aria-label="Search employee reports"
+        />
+      </div>
+
+      <div id="reportList" class="report-list"></div>
+    </section>
+  </main>
+
+  <script src="js/admin-reports.js"></script>
+</body>
+</html>

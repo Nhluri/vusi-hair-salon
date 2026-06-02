@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Home | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a href="home.html" class="brand" aria-label="Vusi's Hair Salon home">
+        Vusi's
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        onclick="toggleMenu()"
+      >
+        Menu
+      </button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="home.html">Home</a>
+        <a href="booking.html">Book</a>
+        <a href="gallery.html?from=home">Gallery</a>
+        <a href="about.html?from=home">About</a>
+        <a href="contact.html?from=home">Contact</a>
+      </div>
+
+      <button type="button" class="nav-cta logout-button" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="dashboard-hero" aria-labelledby="welcomeText">
+      <div class="dashboard-copy">
+        <p class="eyebrow">Client Studio</p>
+
+        <h1 id="welcomeText">Welcome back.</h1>
+
+        <p>
+          Your selected look is saved. Continue booking, or choose a new service from the studio menu.
+        </p>
+      </div>
+
+      <section class="selected-look" aria-labelledby="selected-look-title">
+        <div class="section-heading-small">
+          <p class="eyebrow">Your Pick</p>
+          <h2 id="selected-look-title">Selected style</h2>
+        </div>
+
+        <div class="selected-card">
+          <img
+            id="selectedImage"
+            src="images/hair1.jpg"
+            alt="Selected style preview"
+          />
+
+          <div class="selected-info">
+            <span id="selectedServiceName">No service selected</span>
+            <button type="button" class="button" onclick="proceedToBooking()">
+              Continue Booking
+            </button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="explore-section" aria-labelledby="explore-title">
+      <div class="section-heading">
+        <p class="eyebrow">Explore</p>
+        <h2 id="explore-title">Try something new.</h2>
+      </div>
+
+      <div class="explore-grid" id="homeExploreGrid"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="homeGalleryTitle">
+      <div class="panel-heading panel-heading-row">
+        <div>
+          <p class="eyebrow">Gallery</p>
+          <h2 id="homeGalleryTitle">Latest salon looks</h2>
+        </div>
+
+        <a href="gallery.html?from=home" class="nav-cta">View Gallery</a>
+      </div>
+
+      <div class="gallery-grid" id="homeGalleryGrid"></div>
+    </section>
+
+    <section class="dashboard-stats" aria-label="Salon statistics">
+      <div>
+        <strong id="homeClientsStat">500+</strong>
+        <span>Happy clients</span>
+      </div>
+
+      <div>
+        <strong>15+</strong>
+        <span>Expert stylists</span>
+      </div>
+
+      <div>
+        <strong>4.9</strong>
+        <span>Client rating</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="homeFooterText">Vusi's Hair Salon — confidence, cut clean.</p>
+  </footer>
+
+  <script src="js/content-store.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+      window.location.href = "login.html";
+    }
+
+    const welcomeText = document.getElementById("welcomeText");
+    const selectedImage = document.getElementById("selectedImage");
+    const selectedServiceName = document.getElementById("selectedServiceName");
+
+    const selectedImg = localStorage.getItem("selectedImage");
+    const selectedService = localStorage.getItem("selectedService");
+
+    const gallery = getGallery();
+    const about = getAboutDetails();
+    const contact = getContactDetails();
+
+    function toggleMenu() {
+      const navLinks = document.getElementById("navLinks");
+      const toggle = document.querySelector(".menu-toggle");
+
+      navLinks.classList.toggle("is-open");
+
+      const isOpen = navLinks.classList.contains("is-open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      toggle.textContent = isOpen ? "Close" : "Menu";
+    }
+
+    if (welcomeText && user) {
+      welcomeText.textContent = "Welcome back, " + (user.name || "Stylist") + ".";
+    }
+
+    if (selectedImg && selectedImage) {
+      selectedImage.src = selectedImg;
+      selectedImage.alt = selectedService
+        ? selectedService + " selected style preview"
+        : "Selected style preview";
+    }
+
+    if (selectedService && selectedServiceName) {
+      selectedServiceName.textContent = selectedService + " selected";
+    }
+
+    if (about && about.clients) {
+      document.getElementById("homeClientsStat").textContent = about.clients;
+    }
+
+    if (contact && contact.address) {
+      document.getElementById("homeFooterText").textContent =
+        "Vusi's Hair Salon — " + contact.address + ".";
+    }
+
+    function galleryToService(item) {
+      if (item.category === "Nails") return "Nails";
+      if (item.category === "Beard") return "Beard Trim";
+      return "Haircut";
+    }
+
+    function renderHomeExplore() {
+      const grid = document.getElementById("homeExploreGrid");
+      if (!grid) return;
+
+      grid.innerHTML = "";
+
+      gallery.slice(0, 3).forEach(function (item, index) {
+        const service = galleryToService(item);
+
+        grid.innerHTML += `
+          <article class="explore-card">
+            <button
+              type="button"
+              onclick="selectAgain('${service}', '${item.image}')"
+              aria-label="Select ${item.title}"
+            >
+              <img src="${item.image}" alt="${item.title}" />
+
+              <span class="explore-content">
+                <span>0${index + 1} / ${item.category}</span>
+                <strong>${item.title}</strong>
+                <small>Tap to save this look before booking.</small>
+                <small>${item.price || getDefaultPrice(item.category)}</small>
+              </span>
+            </button>
+          </article>
+        `;
+      });
+    }
+
+    function renderHomeGallery() {
+      const grid = document.getElementById("homeGalleryGrid");
+      if (!grid) return;
+
+      grid.innerHTML = "";
+
+      gallery.slice(0, 3).forEach(function (item) {
+        const service = galleryToService(item);
+
+        grid.innerHTML += `
+          <button
+            class="gallery-item"
+            type="button"
+            onclick="selectAgain('${service}', '${item.image}')"
+            aria-label="Select ${item.title}"
+          >
+            <img src="${item.image}" alt="${item.title}" />
+          </button>
+        `;
+      });
+    }
+
+    function selectAgain(service, img) {
+      localStorage.setItem("selectedService", service);
+      localStorage.setItem("selectedImage", img);
+      window.location.reload();
+    }
+
+    function proceedToBooking() {
+      window.location.href = "booking.html";
+    }
+
+    document.querySelectorAll("#navLinks a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        const navLinks = document.getElementById("navLinks");
+        const toggle = document.querySelector(".menu-toggle");
+
+        if (navLinks.classList.contains("is-open")) {
+          navLinks.classList.remove("is-open");
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.textContent = "Menu";
+        }
+      });
+    });
+
+    renderHomeExplore();
+    renderHomeGallery();
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Employees | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
+        Vusi's Admin
+      </a>
+
+      <div class="nav-links">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-employees.html">Employees</a>
+        <a href="admin-users.html">Users</a>
+        <a href="admin-walkins.html">Walk-ins</a>
+      </div>
+
+      <button type="button" class="nav-cta logout-button" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main class="admin-employees-page">
+    <section class="admin-hero employee-admin-hero" aria-labelledby="employeesTitle">
+      <div>
+        <p class="eyebrow">Staff Management</p>
+        <h1 id="employeesTitle">Build the salon team.</h1>
+        <p>
+          Add employees, assign specialties, track availability, and monitor current client workload.
+        </p>
+      </div>
+
+      <aside class="admin-focus-card" aria-label="Employee summary">
+        <span>Team Size</span>
+        <strong id="teamCount">0 employees</strong>
+        <p id="teamSummary">No employees added yet.</p>
+      </aside>
+    </section>
+
+    <section class="employee-admin-grid">
+      <section class="admin-panel" aria-labelledby="addEmployeeTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Add Staff</p>
+          <h2 id="addEmployeeTitle">New employee</h2>
+        </div>
+
+        <form id="employeeForm">
+          <div class="form-group">
+            <label for="empName">Name</label>
+            <input id="empName" type="text" placeholder="Employee name" autocomplete="name" />
+          </div>
+
+          <div class="form-group">
+            <label for="empEmail">Email</label>
+            <input id="empEmail" type="email" placeholder="Employee email" autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label for="empPass">Password</label>
+            <input id="empPass" type="password" placeholder="Temporary password" autocomplete="new-password" />
+          </div>
+
+          <div class="form-group">
+            <label for="empSpecialty">Specialty</label>
+            <select id="empSpecialty">
+              <option value="Hair Styling">Hair Styling</option>
+              <option value="Nail Care">Nail Care</option>
+              <option value="Beard Grooming">Beard Grooming</option>
+              <option value="All Services">All Services</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="empAvailability">Availability</label>
+            <select id="empAvailability">
+              <option value="Available">Available</option>
+              <option value="Busy">Busy</option>
+              <option value="Off Duty">Off Duty</option>
+            </select>
+          </div>
+
+          <button type="submit" class="button">Add Employee</button>
+        </form>
+      </section>
+
+      <section class="admin-panel" aria-labelledby="staffInsightTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Salon Insight</p>
+          <h2 id="staffInsightTitle">Staff coverage</h2>
+        </div>
+
+        <div id="coverageList" class="service-breakdown"></div>
+      </section>
+    </section>
+
+    <section class="admin-panel employee-directory" aria-labelledby="directoryTitle">
+      <div class="panel-heading panel-heading-row">
+        <div>
+          <p class="eyebrow">Directory</p>
+          <h2 id="directoryTitle">Employees</h2>
+        </div>
+
+        <input
+          id="search"
+          type="search"
+          placeholder="Search employee"
+          aria-label="Search employee"
+        />
+      </div>
+
+      <div id="employeeList" class="employee-list"></div>
+    </section>
+  </main>
+
+  <script src="js/admin-employees.js"></script>
+</body>
+</html>

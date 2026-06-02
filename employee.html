@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Employee Dashboard | Vusi's Hair Salon</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Employee navigation">
+      <a href="employee.html" class="brand" aria-label="Employee dashboard">
+        Vusi's Staff
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        onclick="toggleMenu()"
+      >
+        Menu
+      </button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#today">Today</a>
+        <a href="#tasks">Clients</a>
+        <a href="#insights">Insights</a>
+      </div>
+
+      <button type="button" class="nav-cta logout-button" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main class="employee-page">
+    <section class="employee-hero" aria-labelledby="employeeWelcome">
+      <div>
+        <p class="eyebrow">Employee Panel</p>
+        <h1 id="employeeWelcome">Your client flow.</h1>
+        <p>
+          Manage bookings, walk-ins, service progress, and daily workload from one focused dashboard.
+        </p>
+      </div>
+
+      <aside class="workload-card" aria-label="Current workload">
+        <span>Current Load</span>
+        <strong id="workloadText">0 waiting</strong>
+        <div class="workload-track">
+          <div id="workloadBar"></div>
+        </div>
+        <p id="workloadMessage">Your schedule is calm.</p>
+      </aside>
+    </section>
+
+    <section class="employee-stats" aria-label="Employee statistics">
+      <article>
+        <span>All Clients</span>
+        <strong id="totalTasks">0</strong>
+      </article>
+
+      <article>
+        <span>Waiting</span>
+        <strong id="waitingTasks">0</strong>
+      </article>
+
+      <article>
+        <span>In Progress</span>
+        <strong id="servingTasks">0</strong>
+      </article>
+
+      <article>
+        <span>Completed</span>
+        <strong id="completedTasks">0</strong>
+      </article>
+    </section>
+
+    <section class="employee-grid" id="insights">
+      <section class="employee-panel" id="today" aria-labelledby="todayTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Today</p>
+          <h2 id="todayTitle">Today’s schedule</h2>
+        </div>
+
+        <div id="todayList" class="compact-list"></div>
+      </section>
+
+      <section class="employee-panel" aria-labelledby="serviceBreakdownTitle">
+        <div class="panel-heading">
+          <p class="eyebrow">Salon Insight</p>
+          <h2 id="serviceBreakdownTitle">Service breakdown</h2>
+        </div>
+
+        <div id="serviceBreakdown" class="service-breakdown"></div>
+      </section>
+    </section>
+
+    <section class="employee-panel" id="tasks" aria-labelledby="taskListTitle">
+      <div class="panel-heading panel-heading-row">
+        <div>
+          <p class="eyebrow">Assigned Clients</p>
+          <h2 id="taskListTitle">My client queue</h2>
+        </div>
+
+        <select id="statusFilter" aria-label="Filter clients by status">
+          <option value="all">All clients</option>
+          <option value="waiting">Waiting</option>
+          <option value="serving">In progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div id="taskList" class="task-list"></div>
+    </section>
+  </main>
+
+  <script src="js/employee.js"></script>
+
+  <script>
+    function toggleMenu() {
+      const navLinks = document.getElementById("navLinks");
+      const toggle = document.querySelector(".menu-toggle");
+
+      navLinks.classList.toggle("is-open");
+
+      const isOpen = navLinks.classList.contains("is-open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      toggle.textContent = isOpen ? "Close" : "Menu";
+    }
+
+    document.querySelectorAll("#navLinks a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        const navLinks = document.getElementById("navLinks");
+        const toggle = document.querySelector(".menu-toggle");
+
+        if (navLinks.classList.contains("is-open")) {
+          navLinks.classList.remove("is-open");
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.textContent = "Menu";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

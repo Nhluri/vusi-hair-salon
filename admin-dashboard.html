@@ -10,184 +10,221 @@
 </head>
 
 <body>
-  <header class="site-header">
-    <nav class="navbar" aria-label="Primary navigation">
-      <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
-        Vusi's Admin
-      </a>
 
-      <div class="nav-links">
-        <a href="admin-dashboard.html">Dashboard</a>
-        <a href="admin-employees.html">Employees</a>
-        <a href="admin-users.html">Users</a>
-        <a href="admin-reports.html">Reports</a>
-        <a href="admin-walkins.html">Walk-ins</a>
-        <a href="admin-gallery.html">Gallery</a>
-        <a href="admin-about.html">About</a>
-        <a href="admin-contact.html">Contact</a>
+<header class="site-header">
+  <nav class="navbar" aria-label="Primary navigation">
+
+    <a href="admin-dashboard.html" class="brand">
+      Vusi's Admin
+    </a>
+
+    <!-- 🔥 MOBILE MENU BUTTON -->
+    <button class="menu-toggle" onclick="toggleMenu()">
+      ☰ Menu
+    </button>
+
+    <!-- 🔥 NAV LINKS -->
+    <div class="nav-links" id="navLinks">
+      <a href="admin-dashboard.html">Dashboard</a>
+      <a href="admin-employees.html">Employees</a>
+      <a href="admin-users.html">Users</a>
+      <a href="admin-reports.html">Reports</a>
+      <a href="admin-walkins.html">Walk-ins</a>
+      <a href="admin-gallery.html">Gallery</a>
+      <a href="admin-about.html">About</a>
+      <a href="admin-contact.html">Contact</a>
+    </div>
+
+    <button class="nav-cta logout-button" onclick="logout()">
+      Logout
+    </button>
+
+  </nav>
+</header>
+
+<main class="admin-page">
+
+  <!-- HERO -->
+  <section class="admin-hero">
+    <div>
+      <p class="eyebrow">Admin Control Room</p>
+      <h1>Salon operations at a glance.</h1>
+      <p>
+        Track customers, employees, bookings, queue pressure, website content, and today’s operations.
+      </p>
+    </div>
+
+    <aside class="admin-focus-card">
+      <span>Today</span>
+      <strong id="todayBookingsCount">0 bookings</strong>
+      <p id="todaySummaryText">No appointments scheduled today.</p>
+    </aside>
+  </section>
+
+  <!-- STATS -->
+  <section class="admin-stats">
+
+    <article>
+      <span>Customers</span>
+      <strong id="usersCount">0</strong>
+    </article>
+
+    <article>
+      <span>Employees</span>
+      <strong id="employeeCount">0</strong>
+    </article>
+
+    <article>
+      <span>Queue</span>
+      <strong id="queueCount">0</strong>
+    </article>
+
+    <article>
+      <span>Bookings</span>
+      <strong id="bookingCount">0</strong>
+    </article>
+
+  </section>
+
+  <!-- GRID 1 -->
+  <section class="admin-grid">
+
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Feature 01</p>
+        <h2>Queue health</h2>
       </div>
 
-      <button type="button" class="nav-cta logout-button" onclick="logout()">
-        Logout
-      </button>
-    </nav>
-  </header>
-
-  <main class="admin-page">
-    <section class="admin-hero" aria-labelledby="adminTitle">
-      <div>
-        <p class="eyebrow">Admin Control Room</p>
-        <h1 id="adminTitle">Salon operations at a glance.</h1>
-        <p>
-          Track customers, employees, bookings, queue pressure, website content, and today’s operational flow.
-        </p>
-      </div>
-
-      <aside class="admin-focus-card" aria-label="Today summary">
-        <span>Today</span>
-        <strong id="todayBookingsCount">0 bookings</strong>
-        <p id="todaySummaryText">No appointments scheduled today.</p>
-      </aside>
-    </section>
-
-    <section class="admin-stats" aria-label="Salon statistics">
-      <article>
-        <span>Customers</span>
-        <strong id="usersCount">0</strong>
-      </article>
-
-      <article>
-        <span>Employees</span>
-        <strong id="employeeCount">0</strong>
-      </article>
-
-      <article>
-        <span>Queue</span>
-        <strong id="queueCount">0</strong>
-      </article>
-
-      <article>
-        <span>Bookings</span>
-        <strong id="bookingCount">0</strong>
-      </article>
-    </section>
-
-    <section class="admin-grid">
-      <section class="admin-panel" aria-labelledby="queueHealthTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Feature 01</p>
-          <h2 id="queueHealthTitle">Queue health</h2>
+      <div class="queue-health">
+        <strong id="queueHealthStatus">Calm</strong>
+        <div class="workload-track">
+          <div id="queueHealthBar"></div>
         </div>
+        <p id="queueHealthMessage">The salon queue is under control.</p>
+      </div>
+    </section>
 
-        <div class="queue-health">
-          <strong id="queueHealthStatus">Calm</strong>
-          <div class="workload-track">
-            <div id="queueHealthBar"></div>
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Feature 02</p>
+        <h2>Popular services</h2>
+      </div>
+
+      <div id="popularServices" class="service-breakdown"></div>
+    </section>
+
+  </section>
+
+  <!-- GRID 2 -->
+  <section class="admin-grid">
+
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Team Load</p>
+        <h2>Employee workload</h2>
+      </div>
+
+      <div id="employeeLoadList" class="compact-list"></div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Live Feed</p>
+        <h2>Latest activity</h2>
+      </div>
+
+      <div id="latestActivity" class="compact-list"></div>
+    </section>
+
+  </section>
+
+  <!-- GRID 3 -->
+  <section class="admin-grid">
+
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Website Content</p>
+        <h2>Public pages</h2>
+      </div>
+
+      <div class="compact-list">
+
+        <a class="compact-item" href="admin-gallery.html">
+          <div>
+            <strong>Gallery Manager</strong>
+            <span>Manage images</span>
           </div>
-          <p id="queueHealthMessage">The salon queue is under control.</p>
-        </div>
-      </section>
+          <span class="status-pill status-serving">Manage</span>
+        </a>
 
-      <section class="admin-panel" aria-labelledby="popularServiceTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Feature 02</p>
-          <h2 id="popularServiceTitle">Popular services</h2>
-        </div>
+        <a class="compact-item" href="admin-about.html">
+          <div>
+            <strong>About Page</strong>
+            <span>Edit salon info</span>
+          </div>
+          <span class="status-pill status-serving">Manage</span>
+        </a>
 
-        <div id="popularServices" class="service-breakdown"></div>
-      </section>
+        <a class="compact-item" href="admin-contact.html">
+          <div>
+            <strong>Contact Page</strong>
+            <span>Edit contact details</span>
+          </div>
+          <span class="status-pill status-serving">Manage</span>
+        </a>
+
+      </div>
     </section>
 
-    <section class="admin-grid">
-      <section class="admin-panel" aria-labelledby="employeeLoadTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Team Load</p>
-          <h2 id="employeeLoadTitle">Employee workload</h2>
-        </div>
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Preview</p>
+        <h2>Public site</h2>
+      </div>
 
-        <div id="employeeLoadList" class="compact-list"></div>
-      </section>
+      <div class="compact-list">
 
-      <section class="admin-panel" aria-labelledby="latestActivityTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Live Feed</p>
-          <h2 id="latestActivityTitle">Latest activity</h2>
-        </div>
+        <a class="compact-item" href="index.html">
+          <div>
+            <strong>Landing Page</strong>
+            <span>View homepage</span>
+          </div>
+          <span class="status-pill status-waiting">Open</span>
+        </a>
 
-        <div id="latestActivity" class="compact-list"></div>
-      </section>
+        <a class="compact-item" href="gallery.html">
+          <div>
+            <strong>Gallery</strong>
+            <span>View gallery</span>
+          </div>
+          <span class="status-pill status-waiting">Open</span>
+        </a>
+
+        <a class="compact-item" href="contact.html">
+          <div>
+            <strong>Contact</strong>
+            <span>View contact page</span>
+          </div>
+          <span class="status-pill status-waiting">Open</span>
+        </a>
+
+      </div>
     </section>
 
-    <section class="admin-grid">
-      <section class="admin-panel" aria-labelledby="websiteContentTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Website Content</p>
-          <h2 id="websiteContentTitle">Public pages</h2>
-        </div>
+  </section>
 
-        <div class="compact-list">
-          <a class="compact-item" href="admin-gallery.html">
-            <div>
-              <strong>Gallery Manager</strong>
-              <span>Add, edit, and delete public gallery images.</span>
-            </div>
-            <span class="status-pill status-serving">Manage</span>
-          </a>
+</main>
 
-          <a class="compact-item" href="admin-about.html">
-            <div>
-              <strong>About Page</strong>
-              <span>Edit salon story, mission, and statistics.</span>
-            </div>
-            <span class="status-pill status-serving">Manage</span>
-          </a>
+<script src="js/content-store.js"></script>
+<script src="js/admin-dashboard.js"></script>
 
-          <a class="compact-item" href="admin-contact.html">
-            <div>
-              <strong>Contact Page</strong>
-              <span>Edit phone, email, address, WhatsApp, and hours.</span>
-            </div>
-            <span class="status-pill status-serving">Manage</span>
-          </a>
-        </div>
-      </section>
+<!-- 🔥 MOBILE MENU SCRIPT -->
+<script>
+function toggleMenu() {
+  let nav = document.getElementById("navLinks");
+  nav.classList.toggle("is-open");
+}
+</script>
 
-      <section class="admin-panel" aria-labelledby="sitePreviewTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Preview</p>
-          <h2 id="sitePreviewTitle">Public site links</h2>
-        </div>
-
-        <div class="compact-list">
-          <a class="compact-item" href="index.html">
-            <div>
-              <strong>Landing Page</strong>
-              <span>View public homepage.</span>
-            </div>
-            <span class="status-pill status-waiting">Open</span>
-          </a>
-
-          <a class="compact-item" href="gallery.html">
-            <div>
-              <strong>Gallery Page</strong>
-              <span>View public gallery.</span>
-            </div>
-            <span class="status-pill status-waiting">Open</span>
-          </a>
-
-          <a class="compact-item" href="contact.html">
-            <div>
-              <strong>Contact Page</strong>
-              <span>View public contact details.</span>
-            </div>
-            <span class="status-pill status-waiting">Open</span>
-          </a>
-        </div>
-      </section>
-    </section>
-  </main>
-
-  <script src="js/content-store.js"></script>
-  <script src="js/admin-dashboard.js"></script>
 </body>
 </html>

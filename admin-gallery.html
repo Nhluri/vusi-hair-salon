@@ -12,11 +12,15 @@
 <body>
   <header class="site-header">
     <nav class="navbar" aria-label="Admin navigation">
+
       <a href="admin-dashboard.html" class="brand">
         Vusi's Admin
       </a>
 
-      <div class="nav-links">
+      <!-- ✅ MOBILE MENU BUTTON -->
+      <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+
+      <div class="nav-links" id="navLinks">
         <a href="admin-dashboard.html">Dashboard</a>
         <a href="admin-employees.html">Employees</a>
         <a href="admin-users.html">Users</a>
@@ -34,6 +38,8 @@
   </header>
 
   <main class="admin-page">
+
+    <!-- HERO -->
     <section class="admin-hero">
       <div>
         <p class="eyebrow">Gallery Manager</p>
@@ -50,7 +56,10 @@
       </aside>
     </section>
 
+    <!-- MAIN GRID -->
     <section class="admin-grid">
+
+      <!-- ADD IMAGE -->
       <section class="admin-panel">
         <div class="panel-heading">
           <p class="eyebrow">Upload</p>
@@ -58,6 +67,7 @@
         </div>
 
         <form id="galleryForm">
+
           <div class="form-group">
             <label for="galleryTitle">Title</label>
             <input id="galleryTitle" type="text" placeholder="Example: Fresh fade finish" />
@@ -73,9 +83,9 @@
           </div>
 
           <div class="form-group">
-  <label for="galleryPrice">Price</label>
-  <input id="galleryPrice" type="text" placeholder="From R60" />
-</div>
+            <label for="galleryPrice">Price</label>
+            <input id="galleryPrice" type="text" placeholder="From R60" />
+          </div>
 
           <div class="form-group">
             <label for="galleryFile">Upload Photo</label>
@@ -97,6 +107,7 @@
         </form>
       </section>
 
+      <!-- GALLERY LIST -->
       <section class="admin-panel">
         <div class="panel-heading panel-heading-row">
           <div>
@@ -114,8 +125,17 @@
 
         <div id="galleryAdminList" class="employee-list"></div>
       </section>
+
     </section>
+
   </main>
+
+  <!-- ✅ MOBILE MENU SCRIPT -->
+  <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("is-open");
+    }
+  </script>
 
   <script src="js/content-store.js"></script>
   <script src="js/admin-gallery.js"></script>

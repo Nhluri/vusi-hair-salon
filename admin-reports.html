@@ -12,11 +12,15 @@
 <body>
   <header class="site-header">
     <nav class="navbar" aria-label="Primary navigation">
+
       <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
         Vusi's Admin
       </a>
 
-      <div class="nav-links">
+      <!-- ✅ MOBILE MENU BUTTON -->
+      <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+
+      <div class="nav-links" id="navLinks">
         <a href="admin-dashboard.html">Dashboard</a>
         <a href="admin-employees.html">Employees</a>
         <a href="admin-users.html">Users</a>
@@ -31,6 +35,8 @@
   </header>
 
   <main class="reports-page">
+
+    <!-- HERO -->
     <section class="admin-hero reports-hero" aria-labelledby="reportsTitle">
       <div>
         <p class="eyebrow">Salon Analytics</p>
@@ -47,6 +53,7 @@
       </aside>
     </section>
 
+    <!-- STATS -->
     <section class="admin-stats" aria-label="Report totals">
       <article>
         <span>Total Tasks</span>
@@ -69,7 +76,9 @@
       </article>
     </section>
 
+    <!-- CHARTS -->
     <section class="reports-grid">
+
       <section class="admin-panel" aria-labelledby="serviceChartTitle">
         <div class="panel-heading">
           <p class="eyebrow">Feature 01</p>
@@ -87,9 +96,12 @@
 
         <div id="employeeChart" class="bar-chart"></div>
       </section>
+
     </section>
 
+    <!-- PERFORMANCE -->
     <section class="reports-grid">
+
       <section class="admin-panel" aria-labelledby="topPerformerTitle">
         <div class="panel-heading">
           <p class="eyebrow">Best Performer</p>
@@ -107,8 +119,10 @@
 
         <div id="statusMix" class="donut-wrap"></div>
       </section>
+
     </section>
 
+    <!-- REPORT LIST -->
     <section class="admin-panel report-directory" aria-labelledby="reportListTitle">
       <div class="panel-heading panel-heading-row">
         <div>
@@ -121,12 +135,21 @@
           id="search"
           placeholder="Search employee"
           aria-label="Search employee reports"
+          onkeyup="searchEmployee()"
         />
       </div>
 
       <div id="reportList" class="report-list"></div>
     </section>
+
   </main>
+
+  <!-- ✅ MOBILE MENU SCRIPT -->
+  <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("is-open");
+    }
+  </script>
 
   <script src="js/admin-reports.js"></script>
 </body>

@@ -11,16 +11,30 @@
 
 <body>
   <header class="site-header">
-    <nav class="navbar" aria-label="Primary navigation">
+    <nav class="navbar" aria-label="Admin navigation">
       <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
         Vusi's Admin
       </a>
 
-      <div class="nav-links">
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        onclick="toggleMenu()"
+      >
+        Menu
+      </button>
+
+      <div class="nav-links" id="navLinks">
         <a href="admin-dashboard.html">Dashboard</a>
         <a href="admin-employees.html">Employees</a>
         <a href="admin-users.html">Users</a>
+        <a href="admin-reports.html">Reports</a>
         <a href="admin-walkins.html">Walk-ins</a>
+        <a href="admin-gallery.html">Gallery</a>
+        <a href="admin-about.html">About</a>
+        <a href="admin-contact.html">Contact</a>
       </div>
 
       <button type="button" class="nav-cta logout-button" onclick="logout()">
@@ -142,5 +156,31 @@
   </main>
 
   <script src="js/admin-walkins.js"></script>
+
+  <script>
+    function toggleMenu() {
+      const navLinks = document.getElementById("navLinks");
+      const toggle = document.querySelector(".menu-toggle");
+
+      navLinks.classList.toggle("is-open");
+
+      const isOpen = navLinks.classList.contains("is-open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      toggle.textContent = isOpen ? "Close" : "Menu";
+    }
+
+    document.querySelectorAll("#navLinks a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        const navLinks = document.getElementById("navLinks");
+        const toggle = document.querySelector(".menu-toggle");
+
+        if (navLinks.classList.contains("is-open")) {
+          navLinks.classList.remove("is-open");
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.textContent = "Menu";
+        }
+      });
+    });
+  </script>
 </body>
 </html>

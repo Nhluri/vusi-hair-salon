@@ -14,6 +14,16 @@
   <nav class="navbar" aria-label="Primary navigation">
     <a href="index.html" class="brand" id="brandLink">Vusi's</a>
 
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      onclick="toggleMenu()"
+    >
+      Menu
+    </button>
+
     <div class="nav-links" id="pageNavLinks"></div>
 
     <button type="button" class="nav-cta" id="backButton">
@@ -68,6 +78,26 @@
   const pageNavLinks = document.getElementById("pageNavLinks");
   const backButton = document.getElementById("backButton");
 
+  function toggleMenu() {
+    const toggle = document.querySelector(".menu-toggle");
+
+    pageNavLinks.classList.toggle("is-open");
+
+    const isOpen = pageNavLinks.classList.contains("is-open");
+    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    toggle.textContent = isOpen ? "Close" : "Menu";
+  }
+
+  function closeMenu() {
+    const toggle = document.querySelector(".menu-toggle");
+
+    if (pageNavLinks.classList.contains("is-open")) {
+      pageNavLinks.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.textContent = "Menu";
+    }
+  }
+
   function getFallbackPage() {
     if (currentUser || from === "home") {
       return "home.html";
@@ -95,9 +125,14 @@
         <a href="gallery.html?from=index">Gallery</a>
         <a href="about.html?from=index">About</a>
         <a href="contact.html?from=index">Contact</a>
-        
+        <a href="login.html">Login</a>
+        <a href="register.html">Book Now</a>
       `;
     }
+
+    document.querySelectorAll("#pageNavLinks a").forEach(function (link) {
+      link.addEventListener("click", closeMenu);
+    });
 
     backButton.addEventListener("click", function () {
       if (window.history.length > 1) {

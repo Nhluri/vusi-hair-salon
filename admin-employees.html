@@ -10,117 +10,146 @@
 </head>
 
 <body>
-  <header class="site-header">
-    <nav class="navbar" aria-label="Primary navigation">
-      <a href="admin-dashboard.html" class="brand" aria-label="Admin dashboard">
-        Vusi's Admin
-      </a>
 
-      <div class="nav-links">
-        <a href="admin-dashboard.html">Dashboard</a>
-        <a href="admin-employees.html">Employees</a>
-        <a href="admin-users.html">Users</a>
-        <a href="admin-walkins.html">Walk-ins</a>
+<header class="site-header">
+  <nav class="navbar" aria-label="Primary navigation">
+
+    <a href="admin-dashboard.html" class="brand">
+      Vusi's Admin
+    </a>
+
+    <!-- 🔥 MOBILE MENU BUTTON -->
+    <button class="menu-toggle" onclick="toggleMenu()">
+      ☰ Menu
+    </button>
+
+    <!-- 🔥 NAV LINKS -->
+    <div class="nav-links" id="navLinks">
+      <a href="admin-dashboard.html">Dashboard</a>
+      <a href="admin-employees.html">Employees</a>
+      <a href="admin-users.html">Users</a>
+      <a href="admin-walkins.html">Walk-ins</a>
+    </div>
+
+    <button class="nav-cta logout-button" onclick="logout()">
+      Logout
+    </button>
+
+  </nav>
+</header>
+
+<main class="admin-employees-page">
+
+  <!-- HERO -->
+  <section class="admin-hero employee-admin-hero">
+    <div>
+      <p class="eyebrow">Staff Management</p>
+      <h1>Build the salon team.</h1>
+      <p>
+        Add employees, assign specialties, track availability, and monitor workload.
+      </p>
+    </div>
+
+    <aside class="admin-focus-card">
+      <span>Team Size</span>
+      <strong id="teamCount">0 employees</strong>
+      <p id="teamSummary">No employees added yet.</p>
+    </aside>
+  </section>
+
+  <!-- GRID -->
+  <section class="employee-admin-grid">
+
+    <!-- ADD EMPLOYEE -->
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Add Staff</p>
+        <h2>New employee</h2>
       </div>
 
-      <button type="button" class="nav-cta logout-button" onclick="logout()">
-        Logout
-      </button>
-    </nav>
-  </header>
+      <form id="employeeForm">
+        <div class="form-group">
+          <label>Name</label>
+          <input id="empName" type="text" placeholder="Employee name" />
+        </div>
 
-  <main class="admin-employees-page">
-    <section class="admin-hero employee-admin-hero" aria-labelledby="employeesTitle">
+        <div class="form-group">
+          <label>Email</label>
+          <input id="empEmail" type="email" placeholder="Employee email" />
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input id="empPass" type="password" placeholder="Temporary password" />
+        </div>
+
+        <div class="form-group">
+          <label>Specialty</label>
+          <select id="empSpecialty">
+            <option>Hair Styling</option>
+            <option>Nail Care</option>
+            <option>Beard Grooming</option>
+            <option>All Services</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Availability</label>
+          <select id="empAvailability">
+            <option>Available</option>
+            <option>Busy</option>
+            <option>Off Duty</option>
+          </select>
+        </div>
+
+        <button type="submit" class="button">Add Employee</button>
+      </form>
+    </section>
+
+    <!-- STAFF INSIGHT -->
+    <section class="admin-panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Salon Insight</p>
+        <h2>Staff coverage</h2>
+      </div>
+
+      <div id="coverageList" class="service-breakdown"></div>
+    </section>
+
+  </section>
+
+  <!-- DIRECTORY -->
+  <section class="admin-panel employee-directory">
+
+    <div class="panel-heading panel-heading-row">
       <div>
-        <p class="eyebrow">Staff Management</p>
-        <h1 id="employeesTitle">Build the salon team.</h1>
-        <p>
-          Add employees, assign specialties, track availability, and monitor current client workload.
-        </p>
+        <p class="eyebrow">Directory</p>
+        <h2>Employees</h2>
       </div>
 
-      <aside class="admin-focus-card" aria-label="Employee summary">
-        <span>Team Size</span>
-        <strong id="teamCount">0 employees</strong>
-        <p id="teamSummary">No employees added yet.</p>
-      </aside>
-    </section>
+      <input
+        id="search"
+        type="search"
+        placeholder="Search employee"
+        onkeyup="searchEmployee()"
+      />
+    </div>
 
-    <section class="employee-admin-grid">
-      <section class="admin-panel" aria-labelledby="addEmployeeTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Add Staff</p>
-          <h2 id="addEmployeeTitle">New employee</h2>
-        </div>
+    <div id="employeeList" class="employee-list"></div>
 
-        <form id="employeeForm">
-          <div class="form-group">
-            <label for="empName">Name</label>
-            <input id="empName" type="text" placeholder="Employee name" autocomplete="name" />
-          </div>
+  </section>
 
-          <div class="form-group">
-            <label for="empEmail">Email</label>
-            <input id="empEmail" type="email" placeholder="Employee email" autocomplete="email" />
-          </div>
+</main>
 
-          <div class="form-group">
-            <label for="empPass">Password</label>
-            <input id="empPass" type="password" placeholder="Temporary password" autocomplete="new-password" />
-          </div>
+<script src="js/admin-employees.js"></script>
 
-          <div class="form-group">
-            <label for="empSpecialty">Specialty</label>
-            <select id="empSpecialty">
-              <option value="Hair Styling">Hair Styling</option>
-              <option value="Nail Care">Nail Care</option>
-              <option value="Beard Grooming">Beard Grooming</option>
-              <option value="All Services">All Services</option>
-            </select>
-          </div>
+<!-- 🔥 MOBILE MENU SCRIPT -->
+<script>
+function toggleMenu() {
+  let nav = document.getElementById("navLinks");
+  nav.classList.toggle("is-open");
+}
+</script>
 
-          <div class="form-group">
-            <label for="empAvailability">Availability</label>
-            <select id="empAvailability">
-              <option value="Available">Available</option>
-              <option value="Busy">Busy</option>
-              <option value="Off Duty">Off Duty</option>
-            </select>
-          </div>
-
-          <button type="submit" class="button">Add Employee</button>
-        </form>
-      </section>
-
-      <section class="admin-panel" aria-labelledby="staffInsightTitle">
-        <div class="panel-heading">
-          <p class="eyebrow">Salon Insight</p>
-          <h2 id="staffInsightTitle">Staff coverage</h2>
-        </div>
-
-        <div id="coverageList" class="service-breakdown"></div>
-      </section>
-    </section>
-
-    <section class="admin-panel employee-directory" aria-labelledby="directoryTitle">
-      <div class="panel-heading panel-heading-row">
-        <div>
-          <p class="eyebrow">Directory</p>
-          <h2 id="directoryTitle">Employees</h2>
-        </div>
-
-        <input
-          id="search"
-          type="search"
-          placeholder="Search employee"
-          aria-label="Search employee"
-        />
-      </div>
-
-      <div id="employeeList" class="employee-list"></div>
-    </section>
-  </main>
-
-  <script src="js/admin-employees.js"></script>
 </body>
 </html>

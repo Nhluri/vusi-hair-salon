@@ -10,15 +10,16 @@
 </head>
 
 <body>
+
 <header class="site-header">
   <nav class="navbar" aria-label="Primary navigation">
-    <a href="index.html" class="brand">Vusi's</a>
 
+    <a href="index.html" class="brand" id="brandLink">Vusi's</a>
+
+    <!-- ✅ MOBILE MENU BUTTON -->
     <button
       class="menu-toggle"
       type="button"
-      aria-label="Open menu"
-      aria-expanded="false"
       onclick="toggleMenu()"
     >
       Menu
@@ -33,9 +34,13 @@
     </div>
 
     <a href="register.html" class="nav-cta">Book Now</a>
+
   </nav>
 </header>
+
 <main class="admin-page">
+
+  <!-- HERO -->
   <section class="admin-hero">
     <div>
       <p class="eyebrow">About Us</p>
@@ -44,7 +49,9 @@
     </div>
   </section>
 
+  <!-- CONTENT GRID -->
   <section class="admin-grid">
+
     <div class="admin-panel">
       <p class="eyebrow">Our Mission</p>
       <h2>Why we exist</h2>
@@ -56,6 +63,7 @@
       <h2>Built with consistency</h2>
 
       <div class="service-breakdown">
+
         <div class="breakdown-row">
           <span>Founded</span>
           <strong id="aboutFounded"></strong>
@@ -70,10 +78,20 @@
           <span>Looks Created</span>
           <strong id="aboutLooks"></strong>
         </div>
+
       </div>
     </div>
+
   </section>
+
 </main>
+
+<!-- ✅ MOBILE MENU SCRIPT -->
+<script>
+  function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("is-open");
+  }
+</script>
 
 <script src="js/content-store.js"></script>
 
@@ -82,52 +100,32 @@
   const params = new URLSearchParams(window.location.search);
   const from = params.get("from");
 
-  const brandLink = document.getElementById("brandLink");
-  const pageNavLinks = document.getElementById("pageNavLinks");
-  const backButton = document.getElementById("backButton");
-
   function getFallbackPage() {
     if (currentUser || from === "home") {
       return "home.html";
     }
-
     return "index.html";
   }
 
   function setupNavigation() {
     const fallback = getFallbackPage();
 
-    brandLink.href = fallback;
+    const brandLink = document.getElementById("brandLink");
 
-    if (currentUser) {
-      pageNavLinks.innerHTML = `
-        <a href="home.html">Home</a>
-        <a href="booking.html">Book</a>
-        <a href="gallery.html?from=home">Gallery</a>
-        <a href="about.html?from=home">About</a>
-        <a href="contact.html?from=home">Contact</a>
-      `;
-    } else {
-      pageNavLinks.innerHTML = `
-        <a href="index.html">Home</a>
-        <a href="gallery.html?from=index">Gallery</a>
-        
-        <a href="contact.html?from=index">Contact</a>
-        
-      `;
+    if (brandLink) {
+      brandLink.href = fallback;
     }
-
-    backButton.addEventListener("click", function () {
-      if (window.history.length > 1) {
-        window.history.back();
-        return;
-      }
-
-      window.location.href = fallback;
-    });
   }
 
-  const about = getAboutDetails();
+  // SAFE DATA LOADING
+  const about = getAboutDetails ? getAboutDetails() : {
+    title: "",
+    story: "",
+    mission: "",
+    founded: "",
+    clients: "",
+    looks: ""
+  };
 
   document.getElementById("aboutTitle").textContent = about.title;
   document.getElementById("aboutStory").textContent = about.story;
@@ -138,5 +136,6 @@
 
   setupNavigation();
 </script>
+
 </body>
 </html>

@@ -3,44 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Admin Contact | Vusi's</title>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+
 <header class="site-header">
-  <nav class="navbar">
-    <a href="admin-dashboard.html" class="brand">Vusi's Admin</a>
-    <div class="nav-links">
+  <nav class="navbar" aria-label="Admin navigation">
+
+    <a href="admin-dashboard.html" class="brand">
+      Vusi's Admin
+    </a>
+
+    <!-- ✅ MOBILE MENU BUTTON -->
+    <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+
+    <div class="nav-links" id="navLinks">
       <a href="admin-dashboard.html">Dashboard</a>
       <a href="admin-gallery.html">Gallery</a>
       <a href="admin-contact.html">Contact</a>
       <a href="admin-about.html">About</a>
     </div>
+
+    <a href="index.html" class="nav-cta logout-button">
+      Logout
+    </a>
+
   </nav>
 </header>
 
 <main class="admin-page">
+
+  <!-- HERO -->
   <section class="admin-hero">
     <div>
       <p class="eyebrow">Contact Manager</p>
       <h1>Edit public contact details.</h1>
-      <p>Update phone, email, address, WhatsApp, and operating hours across the site.</p>
+      <p>
+        Update phone, email, address, WhatsApp, and operating hours across the site.
+      </p>
     </div>
   </section>
 
+  <!-- FORM -->
   <section class="admin-panel">
+
     <form id="contactForm">
-      <div class="form-group"><label>Phone</label><input id="phone"></div>
-      <div class="form-group"><label>Email</label><input id="email"></div>
-      <div class="form-group"><label>Address</label><input id="address"></div>
-      <div class="form-group"><label>Hours</label><input id="hours"></div>
-      <div class="form-group"><label>WhatsApp</label><input id="whatsapp"></div>
-      <button class="button" type="submit">Save Contact Details</button>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input id="phone" type="text" placeholder="Enter phone number">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Enter email">
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input id="address" type="text" placeholder="Enter address">
+      </div>
+
+      <div class="form-group">
+        <label for="hours">Hours</label>
+        <input id="hours" type="text" placeholder="e.g. 08:00 - 18:00">
+      </div>
+
+      <div class="form-group">
+        <label for="whatsapp">WhatsApp</label>
+        <input id="whatsapp" type="text" placeholder="WhatsApp number">
+      </div>
+
+      <button class="button" type="submit">
+        Save Contact Details
+      </button>
+
     </form>
+
   </section>
+
 </main>
+
+<!-- ✅ MOBILE MENU SCRIPT -->
+<script>
+  function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("is-open");
+  }
+</script>
 
 <script src="js/content-store.js"></script>
 <script src="js/admin-contact.js"></script>
+
 </body>
 </html>

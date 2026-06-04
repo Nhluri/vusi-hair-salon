@@ -1,105 +1,73 @@
 function getContent(key, fallback) {
-    const saved = localStorage.getItem(key);
-
-    if (saved) {
-        return JSON.parse(saved);
+  const saved = localStorage.getItem(key);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.error("Invalid JSON:", key);
     }
-
-    localStorage.setItem(key, JSON.stringify(fallback));
-    return fallback;
+  }
+  localStorage.setItem(key, JSON.stringify(fallback));
+  return fallback;
 }
 
 function saveContent(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-function normalizeGalleryItems(items) {
-    return items.map(function (item) {
-        return {
-            id: item.id,
-            title: item.title,
-            category: item.category,
-            image: item.image,
-            price: item.price || getDefaultPrice(item.category)
-        };
-    });
-}
+/* ---------------- SYSTEM CATEGORIES ---------------- */
+const SERVICE_CATEGORIES = [
+  "Training center",
+  "Exam center",
+  "Makeups center",
+  "Nail station",
+  "Tattoo station",
+  "Hairdresser",
+  "Barbar station",
+  "Massage station"
+];
 
+/* ---------------- PRICES ---------------- */
 function getDefaultPrice(category) {
-    if (category === "Nails") return "From R80";
-    if (category === "Beard") return "From R40";
-    return "From R60";
+  switch (category) {
+    case "Nail station": return "From R80";
+    case "Barbar station": return "From R40";
+    case "Massage station": return "From R150";
+    case "Tattoo station": return "From R200";
+    case "Makeups center": return "From R120";
+    case "Training center": return "From R300";
+    case "Exam center": return "From R250";
+    default: return "From R60";
+  }
 }
 
+/* ---------------- GALLERY SOURCE ---------------- */
 function getGallery() {
-    const gallery = getContent("siteGallery", [
-        {
-            id: 1,
-            title: "Signature Haircut",
-            category: "Hair",
-            image: "images/hair1.jpg",
-            price: "From R60"
-        },
-        {
-            id: 2,
-            title: "Nail Studio Finish",
-            category: "Nails",
-            image: "images/nails1.jpg",
-            price: "From R80"
-        },
-        {
-            id: 3,
-            title: "Beard Grooming",
-            category: "Beard",
-            image: "images/beard1.jpg",
-            price: "From R40"
-        }
-    ]);
-
-    const normalized = normalizeGalleryItems(gallery);
-    saveContent("siteGallery", normalized);
-
-    return normalized;
+  return getContent("siteGallery", []);
 }
 
-function getContactDetails() {
-    return getContent("siteContact", {
-        phone: "+27 11 456 7890",
-        email: "bookings@vusisalon.co.za",
-        address: "128 Commissioner Street, Johannesburg CBD",
-        hours: "Mon-Fri 08:00-18:00 | Sat-Sun 09:00-17:00",
-        whatsapp: "+27 72 000 0000"
-    });
-}
-
+/* ---------------- ABOUT ---------------- */
 function getAboutDetails() {
-    return getContent("siteAbout", {
-        title: "More than a salon, an experience.",
-        story: "Vusi's Hair Salon is built around clean execution, premium grooming, and personal confidence.",
-        mission: "To help every client leave sharper, calmer, and more confident than they arrived.",
-        founded: "2012",
-        clients: "200+",
-        looks: "15k+"
-    });
+  return getContent("siteAbout", {
+    title: "More than a salon, an experience.",
+    story: "Professional beauty and grooming services.",
+    mission: "Helping clients look and feel confident.",
+    founded: "2012",
+    clients: "200+",
+    looks: "15k+"
+  });
 }
 
+/* ---------------- CONTACT ---------------- */
+function getContactDetails() {
+  return getContent("siteContact", {
+    phone: "+27 11 456 7890",
+    email: "bookings@vusisalon.co.za",
+    address: "Johannesburg CBD"
+  });
+}
+
+/* ---------------- SERVICE MAP ---------------- */
 function galleryToService(item) {
-    if (item.category === "Nails") return "Nails";
-    if (item.category === "Beard") return "Beard Trim";
-    return "Haircut";
-}
-
-function selectService(service, imgPath) {
-    localStorage.setItem("selectedService", service);
-    localStorage.setItem("selectedImage", imgPath);
-
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-
-    if (!user) {
-        alert("Please create an account to book your appointment.");
-        window.location.href = "register.html";
-        return;
-    }
-
-    window.location.href = "home.html";
+  return item.category;
 }

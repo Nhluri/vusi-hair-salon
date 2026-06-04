@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,22 @@
   <title>Gallery | Vusi's Hair Salon</title>
 
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Ensures clean aspect-ratio sizing for dynamic images */
+    .gallery-preview-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
 </head>
 
 <body>
@@ -60,9 +77,14 @@
 
         <select id="galleryFilter" aria-label="Filter gallery">
           <option value="All">All services</option>
-          <option value="Hair">Hair</option>
-          <option value="Nails">Nails</option>
-          <option value="Beard">Beard</option>
+          <option value="Training center">Training center</option>
+          <option value="Exam center">Exam center</option>
+          <option value="Makeups center">Makeups center</option>
+          <option value="Nail station">Nail station</option>
+          <option value="Tattoo station">Tattoo station</option>
+          <option value="Hairdresser">Hairdresser</option>
+          <option value="Barbar station">Barbar station</option>
+          <option value="Massage station">Massage station</option>
         </select>
       </div>
 
@@ -77,7 +99,7 @@
 
       <img
         id="previewImage"
-        src="images/hair1.jpg"
+        src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23aab4c4' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>"
         alt="Gallery preview"
         class="gallery-preview-image"
       />
@@ -159,6 +181,12 @@
       });
     }
 
+    // Dynamic routing fallback to handle booking category requirements smoothly
+    function galleryToService(item) {
+      if (item.category) return item.category;
+      return "Hairdresser";
+    }
+
     function renderGallery(category) {
       const grid = document.getElementById("publicGallery");
       const items = category === "All"
@@ -170,7 +198,7 @@
       grid.innerHTML = "";
 
       if (items.length === 0) {
-        grid.innerHTML = '<p class="empty-state">No images found for this service.</p>';
+        grid.innerHTML = '<p class="empty-state" style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 3rem 0;">No images found for this category.</p>';
         return;
       }
 
@@ -180,9 +208,9 @@
             class="gallery-item"
             type="button"
             onclick="previewAndSelect('${item.id}')"
-            aria-label="Select ${item.title}"
+            aria-label="Select ${item.title || 'Style'}"
           >
-            <img src="${item.image}" alt="${item.title}" />
+            <img src="${item.image}" alt="${item.title || 'Salon Visual'}" />
           </button>
         `;
       });
@@ -204,8 +232,8 @@
       localStorage.setItem("selectedImage", item.image);
 
       document.getElementById("previewImage").src = item.image;
-      document.getElementById("previewImage").alt = item.title;
-      document.getElementById("previewTitle").textContent = item.title;
+      document.getElementById("previewImage").alt = item.title || "Gallery preview";
+      document.getElementById("previewTitle").textContent = item.title || "Selected Visual";
       document.getElementById("gallerySelectedTitle").textContent = service + " selected";
     }
 
@@ -230,12 +258,14 @@
       window.location.href = "booking.html";
     });
 
+    // Run layout configurations on load
     setupGalleryNavigation();
     renderGallery("All");
 
-    if (gallery.length > 0) {
+    if (gallery && gallery.length > 0) {
       previewAndSelect(gallery[0].id);
     }
   </script>
 </body>
 </html>
+

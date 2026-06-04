@@ -7,6 +7,38 @@
   <title>Home | Vusi's Hair Salon</title>
 
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Clean overrides ensuring responsive layout alignment on the home grids */
+    @media (min-width: 901px) {
+      .explore-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr) !important;
+        flex-direction: unset !important;
+        overflow-x: unset !important;
+        padding-bottom: 0 !important;
+      }
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr 0.85fr !important;
+        flex-direction: unset !important;
+        overflow-x: unset !important;
+        padding-bottom: 0 !important;
+      }
+      .explore-card, .gallery-item {
+        width: 100% !important;
+      }
+    }
+    /* Mobile-first layouts default to scroll snapping as defined in your style.css */
+    @media (max-width: 900px) {
+      .explore-grid, .gallery-grid {
+        display: flex !important;
+      }
+      .explore-card, .gallery-item {
+        flex: 0 0 auto !important;
+        width: 280px !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -84,11 +116,11 @@
       <div class="explore-grid" id="homeExploreGrid"></div>
     </section>
 
-    <section class="admin-panel" aria-labelledby="homeGalleryTitle">
-      <div class="panel-heading panel-heading-row">
+    <section class="explore-section" aria-labelledby="homeGalleryTitle" style="border-top: 1px solid var(--line);">
+      <div class="panel-heading panel-heading-row" style="margin-bottom: 1.5rem;">
         <div>
           <p class="eyebrow">Gallery</p>
-          <h2 id="homeGalleryTitle">Latest salon looks</h2>
+          <h2 id="homeGalleryTitle" style="font-size: clamp(2.1rem, 4vw, 3.8rem); font-weight: 900; margin: 0;">Latest salon looks</h2>
         </div>
 
         <a href="gallery.html?from=home" class="nav-cta">View Gallery</a>
@@ -136,9 +168,18 @@
     const selectedImg = localStorage.getItem("selectedImage");
     const selectedService = localStorage.getItem("selectedService");
 
-    const gallery = getGallery();
-    const about = getAboutDetails();
-    const contact = getContactDetails();
+    // Dynamic fallbacks matching admin components or placeholder logic
+    function getCategoryIcon(category) {
+      if (category === "Nails") return "💅";
+      if (category === "Beard") return "🧔";
+      return "✂️";
+    }
+
+    function getDefaultPrice(category) {
+      if (category === "Nails") return "From R150";
+      if (category === "Beard") return "From R80";
+      return "From R120";
+    }
 
     function toggleMenu() {
       const navLinks = document.getElementById("navLinks");
@@ -166,13 +207,20 @@
       selectedServiceName.textContent = selectedService + " selected";
     }
 
-    if (about && about.clients) {
-      document.getElementById("homeClientsStat").textContent = about.clients;
+    // Safety checks for context details loaded via content-store.js
+    if (typeof getAboutDetails === "function") {
+      const about = getAboutDetails();
+      if (about && about.clients) {
+        document.getElementById("homeClientsStat").textContent = about.clients;
+      }
     }
 
-    if (contact && contact.address) {
-      document.getElementById("homeFooterText").textContent =
-        "Vusi's Hair Salon — " + contact.address + ".";
+    if (typeof getContactDetails === "function") {
+      const contact = getContactDetails();
+      if (contact && contact.address) {
+        document.getElementById("homeFooterText").textContent =
+          "Vusi's Hair Salon — " + contact.address + ".";
+      }
     }
 
     function galleryToService(item) {
@@ -183,28 +231,27 @@
 
     function renderHomeExplore() {
       const grid = document.getElementById("homeExploreGrid");
-      if (!grid) return;
+      if (!grid || typeof getGallery !== "function") return;
 
+      const gallery = getGallery();
       grid.innerHTML = "";
 
-      gallery.slice(0, 3).forEach(function (item, index) {
-        const service = galleryToService(item);
+      // Render items uploaded by Admin Gallery
+      gallery.forEach(function (item) {
+        const category = item.category || "Haircut";
+        const title = item.title || "Fresh Finish";
+        const price = item.price || getDefaultPrice(category);
+        const imgPath = item.image || "images/hair1.jpg";
 
         grid.innerHTML += `
           <article class="explore-card">
-            <button
-              type="button"
-              onclick="selectAgain('${service}', '${item.image}')"
-              aria-label="Select ${item.title}"
-            >
-              <img src="${item.image}" alt="${item.title}" />
-
-              <span class="explore-content">
-                <span>0${index + 1} / ${item.category}</span>
-                <strong>${item.title}</strong>
-                <small>Tap to save this look before booking.</small>
-                <small>${item.price || getDefaultPrice(item.category)}</small>
-              </span>
+            <button type="button" onclick="selectAgain('${galleryToService(item)}', '${imgPath}')">
+              <img src="${imgPath}" alt="${title}">
+              <div class="explore-content">
+                <span>${getCategoryIcon(category)} ${category}</span>
+                <strong>${title}</strong>
+                <small>${price}</small>
+              </div>
             </button>
           </article>
         `;
@@ -213,21 +260,18 @@
 
     function renderHomeGallery() {
       const grid = document.getElementById("homeGalleryGrid");
-      if (!grid) return;
+      if (!grid || typeof getGallery !== "function") return;
 
+      const gallery = getGallery();
       grid.innerHTML = "";
 
-      gallery.slice(0, 3).forEach(function (item) {
-        const service = galleryToService(item);
+      gallery.forEach(function (item) {
+        const imgPath = item.image || "images/hair1.jpg";
+        const title = item.title || "Salon visual";
 
         grid.innerHTML += `
-          <button
-            class="gallery-item"
-            type="button"
-            onclick="selectAgain('${service}', '${item.image}')"
-            aria-label="Select ${item.title}"
-          >
-            <img src="${item.image}" alt="${item.title}" />
+          <button class="gallery-item" type="button" onclick="selectAgain('${galleryToService(item)}', '${imgPath}')">
+            <img src="${imgPath}" alt="${title}">
           </button>
         `;
       });
@@ -256,6 +300,7 @@
       });
     });
 
+    // Fire rendering on load
     renderHomeExplore();
     renderHomeGallery();
   </script>

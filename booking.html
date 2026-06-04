@@ -7,6 +7,15 @@
   <title>Book Appointment | Vusi's Hair Salon</title>
 
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Styling overrides to maintain perfectly sized responsive images */
+    .booking-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: calc(var(--radius) / 2);
+    }
+  </style>
 </head>
 
 <body>
@@ -54,13 +63,13 @@
         <div class="booking-preview" aria-label="Selected service preview">
           <img
             id="bookingPreviewImage"
-            src="images/hair1.jpg"
+            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23aab4c4' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>"
             alt="Selected service preview"
           />
 
           <div>
             <span>Selected Look</span>
-            <strong id="bookingPreviewTitle">Haircut</strong>
+            <strong id="bookingPreviewTitle">Hairdresser</strong>
           </div>
         </div>
       </div>
@@ -74,9 +83,14 @@
           <div class="form-group">
             <label for="service">Service</label>
             <select id="service" name="service" required>
-              <option value="Haircut">Haircut</option>
-              <option value="Nails">Nails</option>
-              <option value="Beard Trim">Beard Trim</option>
+              <option value="Training center">Training center</option>
+              <option value="Exam center">Exam center</option>
+              <option value="Makeups center">Makeups center</option>
+              <option value="Nail station">Nail station</option>
+              <option value="Tattoo station">Tattoo station</option>
+              <option value="Hairdresser">Hairdresser</option>
+              <option value="Barbar station">Barbar station</option>
+              <option value="Massage station">Massage station</option>
             </select>
           </div>
 

@@ -7,6 +7,44 @@
   <title>Admin Gallery | Vusi's Hair Salon</title>
 
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Admin view custom sizing overrides tailored to style.css values */
+    .upload-preview {
+      width: 100%;
+      height: 220px;
+      border-radius: var(--radius);
+      border: 1px dashed var(--line);
+      background: rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .upload-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .admin-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: calc(var(--radius) / 2);
+      object-fit: cover;
+      border: 1px solid var(--line);
+    }
+    .category-group-title {
+      color: var(--cream);
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 1rem;
+      background: var(--panel-strong);
+      border-radius: 8px;
+      margin: 1.5rem 0 1rem 0;
+      border-left: 4px solid var(--blue);
+    }
+  </style>
 </head>
 
 <body>
@@ -17,7 +55,6 @@
         Vusi's Admin
       </a>
 
-      <!-- ✅ MOBILE MENU BUTTON -->
       <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
 
       <div class="nav-links" id="navLinks">
@@ -31,7 +68,7 @@
         <a href="admin-contact.html">Contact</a>
       </div>
 
-      <button type="button" class="nav-cta logout-button" onclick="logout()">
+      <button type="button" class="nav-cta logout-button" onclick="handleLogout()">
         Logout
       </button>
     </nav>
@@ -39,7 +76,6 @@
 
   <main class="admin-page">
 
-    <!-- HERO -->
     <section class="admin-hero">
       <div>
         <p class="eyebrow">Gallery Manager</p>
@@ -56,35 +92,29 @@
       </aside>
     </section>
 
-    <!-- MAIN GRID -->
     <section class="admin-grid">
 
-      <!-- ADD IMAGE -->
       <section class="admin-panel">
         <div class="panel-heading">
           <p class="eyebrow">Upload</p>
-          <h2>Add gallery image</h2>
+          <h2 id="formPanelTitle">Add gallery image</h2>
         </div>
 
         <form id="galleryForm">
 
           <div class="form-group">
             <label for="galleryTitle">Title</label>
-            <input id="galleryTitle" type="text" placeholder="Example: Fresh fade finish" />
+            <input id="galleryTitle" type="text" placeholder="Example: Fresh fade finish" required />
           </div>
 
           <div class="form-group">
             <label for="galleryCategory">Category</label>
-            <select id="galleryCategory">
-              <option value="Hair">Hair</option>
-              <option value="Nails">Nails</option>
-              <option value="Beard">Beard</option>
-            </select>
+            <select id="galleryCategory" required></select>
           </div>
 
           <div class="form-group">
             <label for="galleryPrice">Price</label>
-            <input id="galleryPrice" type="text" placeholder="From R60" />
+            <input id="galleryPrice" type="text" placeholder="From R60" required />
           </div>
 
           <div class="form-group">
@@ -94,11 +124,11 @@
 
           <div class="form-group">
             <label for="galleryImage">Or Image Path</label>
-            <input id="galleryImage" type="text" placeholder="images/hair1.jpg" />
+            <input id="galleryImage" type="text" placeholder="Alternative path URL string" />
           </div>
 
           <div class="upload-preview">
-            <img id="uploadPreview" src="images/hair1.jpg" alt="Upload preview" />
+            <img id="uploadPreview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23aab4c4' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>" alt="Upload preview" />
           </div>
 
           <button class="button" type="submit" id="gallerySubmitBtn">
@@ -107,7 +137,6 @@
         </form>
       </section>
 
-      <!-- GALLERY LIST -->
       <section class="admin-panel">
         <div class="panel-heading panel-heading-row">
           <div>
@@ -130,10 +159,19 @@
 
   </main>
 
-  <!-- ✅ MOBILE MENU SCRIPT -->
   <script>
     function toggleMenu() {
       document.getElementById("navLinks").classList.toggle("is-open");
+    }
+    
+    // Safety handling interface for execution 
+    function handleLogout() {
+      if (typeof logout === "function") {
+        logout();
+      } else {
+        localStorage.removeItem("currentUser");
+        window.location.href = "login.html";
+      }
     }
   </script>
 

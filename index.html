@@ -2,18 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Vusi's Hair Salon offers premium hair styling, grooming, nails, and beauty services with easy booking."
-  />
-
+    content="Vusi's Hair Salon offers premium hair styling, grooming, nails, and beauty services with easy booking." />
   <title>Vusi's Hair Salon | Premium Hair Studio</title>
-
   <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
   <header class="site-header">
     <nav class="navbar" aria-label="Primary navigation">
@@ -21,21 +18,16 @@
         Vusi's
       </a>
 
-      <button
-        class="menu-toggle"
-        type="button"
-        aria-label="Open menu"
-        aria-expanded="false"
-        onclick="toggleMenu()"
-      >
+      <button id="menuToggle" class="menu-toggle" aria-controls="navLinks" aria-expanded="false">
         Menu
       </button>
 
-      <div class="nav-links" id="navLinks">
+      <div id="navLinks" class="nav-links">
         <a href="#about">About</a>
         <a href="#services">Services</a>
-        <a href="gallery.html?from=index">Gallery</a>
-        <a href="contact.html?from=index">Contact</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="about.html">About Page</a>
+        <a href="contact.html">Contact</a>
         <a href="login.html">Login</a>
       </div>
 
@@ -115,9 +107,19 @@
       <div class="section-heading">
         <p class="eyebrow">Studio Menu</p>
         <h2 id="services-title">Our signature services</h2>
+
+        <select id="serviceFilter" class="service-filter" aria-label="Filter services by category">
+          <option value="All">Select a category</option>
+        </select>
       </div>
 
-      <div class="services-layout" id="dynamicServicesLayout"></div>
+      <!-- Services Carousel -->
+      <div id="servicesCarouselWrap" class="carousel-wrap" aria-label="Services carousel">
+        <button id="servicesPrev" class="carousel-arrow prev" aria-label="Previous services">&#10094;</button>
+        <div id="servicesCarousel" class="carousel-track" role="list"></div>
+        <button id="servicesNext" class="carousel-arrow next" aria-label="Next services">&#10095;</button>
+      </div>
+      <div id="servicesDots" class="carousel-dots" aria-hidden="true"></div>
     </section>
 
     <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
@@ -126,7 +128,13 @@
         <h2 id="gallery-title">Looks with presence</h2>
       </div>
 
-      <div class="gallery-grid" id="landingGalleryGrid"></div>
+      <!-- Gallery Carousel -->
+      <div id="galleryCarouselWrap" class="carousel-wrap" aria-label="Gallery carousel">
+        <button id="galleryPrev" class="carousel-arrow prev" aria-label="Previous images">&#10094;</button>
+        <div id="galleryCarousel" class="carousel-track" role="list"></div>
+        <button id="galleryNext" class="carousel-arrow next" aria-label="Next images">&#10095;</button>
+      </div>
+      <div id="galleryDots" class="carousel-dots" aria-hidden="true"></div>
     </section>
   </main>
 
@@ -135,206 +143,6 @@
   </footer>
 
   <script src="js/content-store.js"></script>
-
-  <script>
-    const gallery = getGallery();
-    const about = getAboutDetails();
-    const contact = getContactDetails();
-
-    function toggleMenu() {
-      const navLinks = document.getElementById("navLinks");
-      const toggle = document.querySelector(".menu-toggle");
-
-      navLinks.classList.toggle("is-open");
-
-      const isOpen = navLinks.classList.contains("is-open");
-      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      toggle.textContent = isOpen ? "Close" : "Menu";
-    }
-
-    function galleryToService(item) {
-      if (item.category === "Nails") return "Nails";
-      if (item.category === "Beard") return "Beard Trim";
-      return "Haircut";
-    }
-
-    function selectService(service, imgPath) {
-      localStorage.setItem("selectedService", service);
-      localStorage.setItem("selectedImage", imgPath);
-
-      const user = JSON.parse(localStorage.getItem("currentUser"));
-
-      if (!user) {
-        alert("Please create an account to book your appointment.");
-        window.location.href = "register.html";
-        return;
-      }
-
-      window.location.href = "home.html";
-    }
-
-    function applySiteContent() {
-      if (about) {
-        document.getElementById("about-title").textContent = about.title;
-        document.getElementById("aboutStoryText").textContent = about.story;
-        document.getElementById("heroStory").textContent = about.mission || about.story;
-        document.getElementById("clientsStat").textContent = about.clients;
-        document.getElementById("looksStat").textContent = about.looks;
-        document.getElementById("foundedStat").textContent = about.founded;
-      }
-
-      if (contact && contact.address) {
-        document.getElementById("footerText").textContent =
-          "Vusi's Hair Salon — " + contact.address + ".";
-        document.getElementById("trustText").textContent =
-          "Visit us at " + contact.address + ".";
-      }
-
-      if (gallery.length > 0) {
-        document.getElementById("heroImage").src = gallery[0].image;
-        document.getElementById("heroImage").alt = gallery[0].title;
-      }
-    }
-
-    function renderServices() {
-      const layout = document.getElementById("dynamicServicesLayout");
-      if (!layout) return;
-
-      const first = gallery[0] || {
-        title: "Hair Care & Styling",
-        category: "Hair",
-        image: "images/hair1.jpg",
-        price: "From R60"
-      };
-
-      const second = gallery[1] || {
-        title: "Nail Care",
-        category: "Nails",
-        image: "images/nails1.jpg",
-        price: "From R80"
-      };
-
-      const third = gallery[2] || {
-        title: "Beard Grooming",
-        category: "Beard",
-        image: "images/beard1.jpg",
-        price: "From R40"
-      };
-
-      layout.innerHTML = `
-        <article class="feature-service">
-          <button
-            class="service-button"
-            type="button"
-            onclick="selectService('${galleryToService(first)}', '${first.image}')"
-            aria-label="Select ${first.title}"
-          >
-            <img src="${first.image}" alt="${first.title}" />
-
-            <span class="service-body">
-              <span class="service-label">01 / Signature</span>
-              <span class="service-title">${first.title}</span>
-              <span class="service-description">
-                Premium ${first.category.toLowerCase()} service crafted around your personal style.
-              </span>
-              <strong>${first.price || getDefaultPrice(first.category)}</strong>
-            </span>
-          </button>
-        </article>
-
-        <div class="service-list">
-          <article class="mini-service">
-            <button
-              class="service-button"
-              type="button"
-              onclick="selectService('${galleryToService(second)}', '${second.image}')"
-              aria-label="Select ${second.title}"
-            >
-              <img src="${second.image}" alt="${second.title}" />
-
-              <span class="service-body">
-                <span class="service-label">02</span>
-                <span class="service-title">${second.title}</span>
-                <span class="service-description">
-                  Detail-focused ${second.category.toLowerCase()} work with a polished finish.
-                </span>
-                <strong>${second.price || getDefaultPrice(second.category)}</strong>
-              </span>
-            </button>
-          </article>
-
-          <article class="mini-service">
-            <button
-              class="service-button"
-              type="button"
-              onclick="selectService('${galleryToService(third)}', '${third.image}')"
-              aria-label="Select ${third.title}"
-            >
-              <img src="${third.image}" alt="${third.title}" />
-
-              <span class="service-body">
-                <span class="service-label">03</span>
-                <span class="service-title">${third.title}</span>
-                <span class="service-description">
-                  Clean grooming and finishing for a confident look.
-                </span>
-                <strong>${third.price || getDefaultPrice(third.category)}</strong>
-              </span>
-            </button>
-          </article>
-
-          <article class="booking-card">
-            <span>Book Today</span>
-            <h3>Ready for a fresh look?</h3>
-            <p>Choose your service and reserve your seat in minutes.</p>
-            <a href="register.html">Get Started</a>
-          </article>
-        </div>
-      `;
-    }
-
-    function renderLandingGallery() {
-      const grid = document.getElementById("landingGalleryGrid");
-      if (!grid) return;
-
-      grid.innerHTML = "";
-
-      gallery.slice(0, 3).forEach(function (item) {
-        const service = galleryToService(item);
-
-        grid.innerHTML += `
-          <button
-            class="gallery-item"
-            type="button"
-            onclick="selectService('${service}', '${item.image}')"
-            aria-label="Select ${item.title}"
-          >
-            <img src="${item.image}" alt="${item.title}" />
-          </button>
-        `;
-      });
-    }
-
-    document.getElementById("exploreServicesBtn")?.addEventListener("click", () => {
-      document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
-    });
-
-    document.querySelectorAll("#navLinks a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        const navLinks = document.getElementById("navLinks");
-        const toggle = document.querySelector(".menu-toggle");
-
-        if (navLinks.classList.contains("is-open")) {
-          navLinks.classList.remove("is-open");
-          toggle.setAttribute("aria-expanded", "false");
-          toggle.textContent = "Menu";
-        }
-      });
-    });
-
-    applySiteContent();
-    renderServices();
-    renderLandingGallery();
-  </script>
+  <script src="js/index.js"></script>
 </body>
 </html>

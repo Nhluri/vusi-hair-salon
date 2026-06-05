@@ -8,80 +8,63 @@
 
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* Custom layout styling engine optimized for mobile responsiveness and split screen views */
-    .auth-page {
-      padding: 0 !important;
-      margin: 0 !important;
-      width: 100%;
-      min-height: calc(100vh - 70px);
+    /* Responsive structural engine wrapping the original HTML tags */
+    .auth-hero {
       display: flex;
+      gap: 2rem;
       align-items: stretch;
-    }
-
-    .auth-split-container {
-      display: flex;
+      min-height: calc(100vh - 120px);
       width: 100%;
-      min-height: 100%;
-      align-items: stretch;
-    }
-
-    /* Left panel: handles copywriting and the interactive profile form layout */
-    .auth-form-side {
-      flex: 1;
-      padding: 3rem 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: var(--navy);
-    }
-
-    .auth-form-wrapper {
-      width: 100%;
-      max-width: 460px;
     }
 
     .auth-copy {
-      margin-bottom: 2rem;
-    }
-
-    .auth-copy h1 {
-      margin: 0.5rem 0;
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      line-height: 1.15;
-    }
-
-    /* Right panel: visually dynamic canvas side displaying looks previewed by shoppers */
-    .auth-image-side {
       flex: 1;
-      position: relative;
-      background: var(--navy-2);
-      overflow: hidden;
+      min-width: 280px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      border-left: 1px solid var(--line);
     }
 
-    .auth-image-side img {
+    .auth-card {
+      flex: 1;
+      min-width: 300px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .image-panel {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      min-height: 350px;
+    }
+
+    .image-panel img {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.75;
     }
 
     .image-note {
       position: absolute;
-      bottom: 2rem;
-      left: 2rem;
-      right: 2rem;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      right: 1.5rem;
       background: rgba(5, 9, 20, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 1.25rem;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 1rem;
       border-radius: calc(var(--radius) / 2);
       border: 1px solid var(--line);
       z-index: 2;
@@ -93,23 +76,22 @@
       text-transform: uppercase;
       color: var(--blue-soft);
       letter-spacing: 0.05em;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.2rem;
     }
 
     .image-note strong {
       color: var(--cream);
+      font-size: 0.95rem;
       font-weight: 500;
-      font-size: 1rem;
     }
 
     .nav-actions-group {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
-    .nav-secondary-link {
+    .nav-home-link {
       color: var(--muted);
       text-decoration: none;
       font-size: 0.9rem;
@@ -117,26 +99,27 @@
       transition: color 0.2s ease;
     }
 
-    .nav-secondary-link:hover {
+    .nav-home-link:hover {
       color: var(--cream);
     }
 
-    /* ================= RESPONSIVE LAYOUT MEDIA QUERY BREAKPOINTS ================= */
-    @media (max-width: 900px) {
-      .auth-split-container {
+    /* ================= DEVICE AND SPLIT-SCREEN BREAKPOINTS ================= */
+    @media (max-width: 950px) {
+      .auth-hero {
         flex-direction: column;
+        align-items: initial;
+        gap: 1.5rem;
       }
-
-      .auth-image-side {
-        flex: none;
-        height: 320px;
-        border-left: none;
-        border-top: 1px solid var(--line);
-        order: -1; /* Image element shifts neatly to the top for vertical phone views */
+      
+      .image-panel {
+        min-height: 300px;
+        height: 350px;
       }
+    }
 
-      .auth-form-side {
-        padding: 2.5rem 1.25rem;
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 1.5rem 1rem;
       }
     }
   </style>
@@ -150,96 +133,88 @@
       </a>
 
       <div class="nav-actions-group">
-        <a href="index.html" class="nav-secondary-link">Home</a>
+        <a href="index.html" class="nav-home-link">Home</a>
         <a href="login.html" class="nav-cta">Login</a>
       </div>
     </nav>
   </header>
 
   <main class="auth-page">
-    <div class="auth-split-container">
-      
-      <section class="auth-form-side" aria-label="Registration details panel">
-        <div class="auth-form-wrapper">
-          
-          <div class="auth-copy">
-            <p class="eyebrow">Membership Access</p>
-            <h1 id="register-title">Create your salon profile.</h1>
-            <p>
-              Save your selected service, book faster, and keep your next look ready when you return.
-            </p>
+    <section class="auth-hero" aria-labelledby="register-title">
+      <div class="auth-copy">
+        <p class="eyebrow">Membership Access</p>
+
+        <h1 id="register-title">Create your salon profile.</h1>
+
+        <p>
+          Save your selected service, book faster, and keep your next look ready when you return.
+        </p>
+      </div>
+
+      <section class="auth-card" aria-label="Create account form">
+        <p class="form-kicker">Start Booking</p>
+
+        <h2>Create Account</h2>
+
+        <form onsubmit="event.preventDefault(); register();">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your name"
+              autocomplete="name"
+              required
+            />
           </div>
 
-          <section class="auth-card" aria-label="Create account form data structure">
-            <p class="form-kicker">Start Booking</p>
-            <h2>Create Account</h2>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+              required
+            />
+          </div>
 
-            <form onsubmit="event.preventDefault(); register();">
-              <div class="form-group">
-                <label for="username">Username</label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  placeholder="Enter your name"
-                  autocomplete="name"
-                  required
-                  aria-required="true"
-                />
-              </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
 
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  autocomplete="email"
-                  required
-                  aria-required="true"
-                />
-              </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
 
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Enter password"
-                  autocomplete="new-password"
-                  required
-                  aria-required="true"
-                />
-              </div>
+          <button type="submit" class="button">Register</button>
+        </form>
 
-              <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="Confirm password"
-                  autocomplete="new-password"
-                  required
-                  aria-required="true"
-                />
-              </div>
-
-              <button type="submit" class="button">Register</button>
-            </form>
-
-            <p class="auth-switch">
-              Already have an account?
-              <a href="login.html">Login</a>
-            </p>
-          </section>
-
-        </div>
+        <p class="auth-switch">
+          Already have an account?
+          <a href="login.html">Login</a>
+        </p>
       </section>
-
-      <aside class="auth-image-side" aria-label="Selected service visual confirmation canvas">
+       
+      <aside class="image-panel" aria-label="Selected service preview">
         <img
           id="selectedLookImage"
           src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23aab4c4' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>"
@@ -253,8 +228,7 @@
           </strong>
         </div>
       </aside>
-
-    </div>
+    </section>
   </main>
 
   <script src="js/auth.js"></script>
